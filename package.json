@@ -1,14 +1,18 @@
 {
   "name": "iconforge-studio",
-  "version": "0.11.0",
+  "version": "0.0.12",
   "description": "Project-local SVG icon library manager and generator",
   "type": "module",
   "scripts": {
     "start": "node server.js",
-    "build": "npm run test && npm run lint",
+    "build": "npm run test && npm run lint && npm run build:frontend",
     "lint": "node --check bin/iconforge.js core.js server.js fontgen.js",
     "test": "node --test",
-    "iconforge": "node bin/iconforge.js"
+    "iconforge": "node bin/iconforge.js",
+    "build:frontend": "ng build",
+    "prestart": "npm run build:frontend",
+    "preiconforge": "npm run build:frontend",
+    "prepack": "npm run build:frontend"
   },
   "engines": {
     "node": ">=20"
@@ -31,5 +35,20 @@
     "README.md",
     "LICENSE"
   ],
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "@angular/common": "^22.3.0",
+    "@angular/compiler": "^22.3.0",
+    "@angular/core": "^22.3.0",
+    "@angular/platform-browser": "^22.3.0",
+    "@angular/platform-browser-dynamic": "^22.3.0",
+    "@angular/router": "^22.3.0",
+    "rxjs": "^7.8.2",
+    "tslib": "^2.9.1",
+    "zone.js": "^0.16.3",
+    "@angular/build": "^22.3.0",
+    "@angular/cli": "^22.3.0",
+    "@angular/compiler-cli": "^22.3.0",
+    "typescript": "~6.0.0"
+  }
 }

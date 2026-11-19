@@ -1,0 +1,12 @@
+# IconForge Studio — generated artefatos
+
+# Generated outputs (regenerate with: npm run build)
+.iconforge/generated/
+
+# Optional: IDE and OS
+.DS_Store
+.vscode/
+.idea/
+*.swp
+*.swo
+*~

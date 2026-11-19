@@ -2,109 +2,16 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#101114">
+  <meta name="description" content="A local-first workspace for managing and building SVG icon libraries.">
   <title>IconForge Studio</title>
   <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
-  <div class="app-shell">
-    <aside class="sidebar">
-      <div class="brand"><div class="brand-mark">✳</div><div><strong>IconForge</strong><small>STUDIO <span class="local-dot"></span> LOCAL</small></div></div>
-      <div class="workspace-label">WORKSPACE</div>
-      <button class="nav active" data-view="overview"><span>◫</span> Overview</button>
-      <button class="nav" data-view="explorer"><span>▦</span> Icon Explorer <span class="nav-count" id="navCount">0</span></button>
-      <button class="nav" data-view="build"><span>⚙</span> Build Studio</button>
-      <button class="nav" data-view="quality"><span>◇</span> Quality Center</button>
-      <div class="sidebar-bottom">
-        <div class="privacy-card"><span class="privacy-icon">♧</span><div><strong>Local-first</strong><small>Your icons stay on this machine.</small></div></div>
-        <div class="version">IconForge Studio <span>v0.9.0 · project-local</span></div>
-      </div>
-    </aside>
-    <main class="main">
-      <header class="topbar"><div class="crumb"><span>Workspace</span><b>/</b><strong id="crumbTitle">Overview</strong></div><div class="top-actions"><span class="server-status"><i></i> Running locally</span><button class="btn btn-quiet" id="undoBtn" disabled title="Undo last library change">↶ Undo</button><button class="btn btn-quiet" id="redoBtn" disabled title="Redo last undone change">↷ Redo</button><button class="btn btn-quiet" id="refreshBtn">↻ Refresh</button></div></header>
-      <section class="view active" id="view-overview">
-        <div class="page-heading"><div><div class="eyebrow">YOUR ICON WORKSPACE</div><h1>Good morning, builder.</h1><p>Everything you need to turn SVGs into a production-ready icon library.</p></div><button class="btn btn-primary" id="importTop">＋ Import icons</button></div>
-        <div class="stats">
-          <article class="stat-card"><div class="stat-top"><span>Total icons</span><span class="stat-icon">▦</span></div><strong id="statIcons">0</strong><small>SVGs in your workspace</small></article>
-          <article class="stat-card"><div class="stat-top"><span>Generated outputs</span><span class="stat-icon">↗</span></div><strong id="statOutputs">0</strong><small>Files from your last build</small></article>
-          <article class="stat-card"><div class="stat-top"><span>Issues detected</span><span class="stat-icon">◇</span></div><strong id="statIssues">0</strong><small>Invalid or unsafe SVGs</small></article>
-        </div>
-        <div class="section-grid">
-          <article class="panel getting-started"><div class="panel-title"><div><h2>Get started</h2><p>Your first icon library, in three steps.</p></div><span class="step-tag">QUICK START</span></div>
-            <div class="steps">
-              <div class="step"><span class="step-number done">1</span><div><strong>Import your SVGs</strong><p>Drop a folder of SVG files into your workspace.</p></div><button class="text-btn" id="importStep">Import →</button></div>
-              <div class="step"><span class="step-number" id="step2">2</span><div><strong>Explore and organize</strong><p>Search, preview and rename icons in one place.</p></div><button class="text-btn" data-goto="explorer">Explore →</button></div>
-              <div class="step"><span class="step-number" id="step3">3</span><div><strong>Build your library</strong><p>Generate a sprite, CSS and a JSON manifest.</p></div><button class="text-btn" data-goto="build">Build →</button></div>
-            </div>
-          </article>
-          <article class="panel recent-panel"><div class="panel-title"><div><h2>Recently added</h2><p>The latest icons in your workspace.</p></div><button class="text-btn" data-goto="explorer">View all →</button></div><div class="recent-list" id="recentList"><div class="empty-state small"><div class="empty-icon">▦</div><strong>No icons yet</strong><p>Import SVGs to see them here.</p></div></div></article>
-        </div>
-        <article class="panel drop-panel" id="dropZone"><div class="drop-icon">↑</div><div><h2>Drop SVG files here</h2><p>Import one or many SVGs. Files are stored in your local workspace.</p></div><button class="btn btn-secondary" id="browseBtn">Browse files</button><input type="file" id="fileInput" accept=".svg,image/svg+xml" multiple hidden></article>
-      </section>
-      <section class="view" id="view-explorer">
-        <div class="page-heading"><div><div class="eyebrow">COLLECTION MANAGEMENT</div><h1>Icon Explorer</h1><p>Find, inspect and manage every icon in your collection.</p></div><button class="btn btn-primary" id="importExplorer">＋ Import icons</button></div>
-        <div class="toolbar"><div class="searchbox"><span>⌕</span><input id="searchInput" placeholder="Search icons by name..." autocomplete="off"></div><select id="sortSelect" aria-label="Sort icons"><option value="name">Name A–Z</option><option value="name-desc">Name Z–A</option></select><button class="btn btn-secondary" id="selectAllBtn">Select all</button><button class="btn btn-secondary hidden" id="convertShapesBtn">Convert shapes to paths</button><button class="btn btn-danger hidden" id="deleteBtn">Delete selected</button></div>
-        <div class="explorer-meta"><span id="explorerCount">0 icons</span><span id="selectedCount">Nothing selected</span></div>
-        <div class="icon-grid" id="iconGrid"></div>
-        <div class="empty-state hidden" id="explorerEmpty"><div class="empty-icon">▦</div><strong>No icons found</strong><p>Import SVGs or try a different search.</p><button class="btn btn-secondary" id="emptyImport">Import SVGs</button></div>
-      </section>
-      <section class="view" id="view-build">
-        <div class="page-heading"><div><div class="eyebrow">OUTPUT GENERATION</div><h1>Build Studio</h1><p>Choose your outputs. IconForge handles the rest.</p></div><span class="pill"><i></i> Local build</span></div>
-        <article class="panel project-settings">
-          <div class="panel-title"><div><h2>Project settings</h2><p>Saved locally and reused for future builds.</p></div><button class="btn btn-secondary" id="saveProjectBtn">Save settings</button></div>
-          <div class="settings-grid">
-            <label><span>Project name</span><input id="projectNameInput" maxlength="80" placeholder="IconForge Project"></label>
-            <label><span>Font family</span><input id="fontFamilyInput" maxlength="80" placeholder="IconForge Icons"></label>
-            <label><span>CSS class prefix</span><input id="cssPrefixInput" maxlength="40" placeholder="icon"></label>
-            <label class="settings-check"><input type="checkbox" id="defaultOptimizeInput" checked><span>Optimize by default</span></label>
-          </div>
-          <p class="settings-note">The selected output formats are also saved as the default set when you save these settings.</p>
-        </article>
-        <div class="build-layout">
-          <div class="panel format-panel"><div class="panel-title"><div><h2>Output formats</h2><p>Select the artefacts you want to generate.</p></div></div>
-            <label class="preset-row" for="buildPreset"><span>Build preset</span><select id="buildPreset"><option value="custom">Custom selection</option><option value="web">Web basics</option><option value="react">React package</option><option value="vue">Vue components</option><option value="angular">Angular components</option><option value="everything">Everything</option></select></label>
-            <label class="format-option"><input type="checkbox" value="sprite" checked><span class="format-symbol">◇</span><span class="format-copy"><strong>SVG Sprite</strong><small>One file containing reusable symbols.</small></span><span class="format-ext">.svg</span></label>
-            <label class="format-option"><input type="checkbox" value="css" checked><span class="format-symbol">#</span><span class="format-copy"><strong>CSS classes</strong><small>Utility classes for styling icons.</small></span><span class="format-ext">.css</span></label>
-            <label class="format-option"><input type="checkbox" value="json" checked><span class="format-symbol">{ }</span><span class="format-copy"><strong>JSON manifest</strong><small>Names and metadata for tooling.</small></span><span class="format-ext">.json</span></label>
-            <label class="format-option"><input type="checkbox" value="svg"><span class="format-symbol">▧</span><span class="format-copy"><strong>Optimized SVG copies</strong><small>Copies valid SVG files to the output folder.</small></span><span class="format-ext">.svg</span></label>
-            <label class="format-option"><input type="checkbox" value="react"><span class="format-symbol">⚛</span><span class="format-copy"><strong>React components</strong><small>JSX components with accessible title support.</small></span><span class="format-ext">.jsx</span></label>
-            <label class="format-option"><input type="checkbox" value="vue"><span class="format-symbol">V</span><span class="format-copy"><strong>Vue components</strong><small>Single-file components with title support.</small></span><span class="format-ext">.vue</span></label>
-            <label class="format-option"><input type="checkbox" value="angular"><span class="format-symbol">A</span><span class="format-copy"><strong>Angular components</strong><small>Standalone component source templates.</small></span><span class="format-ext">.ts</span></label>
-            <label class="format-option"><input type="checkbox" value="font"><span class="format-symbol">Aa</span><span class="format-copy"><strong>Icon font</strong><small>Generate TTF, WOFF2 and CSS classes from paths and basic converted shapes.</small></span><span class="format-ext">.ttf</span></label>
-            <label class="format-option"><input type="checkbox" id="optimizeToggle" checked><span class="format-symbol">✧</span><span class="format-copy"><strong>Optimize SVG markup</strong><small>Uses SVGO when installed; otherwise applies conservative markup cleanup.</small></span><span class="format-ext">OPTION</span></label>
-            <div class="build-actions"><button class="btn btn-primary btn-large" id="buildBtn">⚡ Generate library</button><button class="btn btn-secondary" id="exportZipBtn">↓ Export ZIP</button><span>Files stay on your machine.</span></div>
-          </div>
-          <div class="panel build-summary"><div class="panel-title"><div><h2>Build summary</h2><p>Your latest generation.</p></div><span class="status-dot" id="buildStatusDot"></span></div>
-            <div class="summary-number"><strong id="buildIconCount">0</strong><span>valid icons included</span></div>
-            <div class="summary-line"><span>Output directory</span><code>.iconforge/generated</code></div>
-            <div class="summary-line"><span>Generated files</span><strong id="buildFileCount">0</strong></div>
-            <div class="output-list" id="outputList"><p class="muted">Your generated files will appear here.</p></div>
-            <div id="buildMessage" class="build-message hidden"></div>
-          </div>
-        </div>
-        <article class="panel font-preview-panel hidden" id="fontPreviewPanel">
-          <div class="panel-title"><div><h2>Generated font preview</h2><p id="fontPreviewSubtitle">Inspect glyphs, names and Unicode code points.</p></div><span class="font-family-pill" id="fontFamilyBadge"></span></div>
-          <div id="fontPreviewGrid" class="font-preview-grid"></div>
-        </article>
-      </section>
-      <section class="view" id="view-quality">
-        <div class="page-heading"><div><div class="eyebrow">HEALTH & RELIABILITY</div><h1>Quality Center</h1><p>Catch problems before your icons reach production.</p></div><button class="btn btn-secondary" id="runChecksBtn">↻ Run checks</button></div>
-        <div class="quality-banner"><div class="quality-mark">✓</div><div><strong id="qualityHeadline">Ready to inspect your collection</strong><p id="qualitySubhead">Run checks to validate SVG structure and flag suspicious files.</p></div></div>
-        <div class="quality-cards" id="qualityCards"></div>
-        <article class="panel quality-details"><div class="panel-title"><div><h2>Findings</h2><p>Issues and recommendations from the latest scan.</p></div></div><div id="findingsList" class="findings-list"><div class="empty-state small"><strong>No scan run yet</strong><p>Run checks to inspect your current collection.</p></div></div></article>
-        <article class="panel compare-panel">
-          <div class="panel-title"><div><h2>Visual optimization comparison</h2><p>Compare a source SVG with its optimized result and inspect the file-size difference.</p></div></div>
-          <div class="compare-controls"><select id="compareIconSelect" aria-label="Icon to compare"><option value="">Select an icon</option></select><button class="btn btn-secondary" id="compareBtn">Compare original and optimized</button></div>
-          <div id="compareSummary" class="compare-summary hidden"></div>
-          <div id="compareGrid" class="compare-grid hidden"></div>
-        </article>
-        <p class="footnote">Checks cover basic SVG structure, scaling hints and accessibility metadata. They are advisory, not a complete accessibility, visual-regression or security audit.</p>
-      </section>
-      <footer class="footer"><span>IconForge Studio <b>·</b> Built for developers</span><span><i class="local-dot"></i> Runs on your machine</span></footer>
-    </main>
-  </div>
-  <div class="toast" id="toast" role="status"></div>
-  <script src="/app.js"></script>
+  <noscript>Generated font preview and the complete Studio UI require JavaScript.</noscript>
+  <app-root></app-root>
+  <script type="module" src="/build/browser/polyfills.js"></script>
+  <script type="module" src="/build/browser/main.js"></script>
 </body>
 </html>

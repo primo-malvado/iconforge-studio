@@ -1,2 +1,28 @@
-.iconforge
-node_modules/
+# Dependencies
+node_modules/ 
+
+# Generated
+.iconforge/generated/
+public/build/
+
+# OS
+.DS_Store
+Thumbs.db
+*.log
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Testing
+coverage/
+.nyc_output/
+
+# Env
+.env
+.env.local
+.angular/
+.iconforge/

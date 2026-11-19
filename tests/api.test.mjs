@@ -79,10 +79,10 @@ test("local API imports, converts, builds, previews, compares and restores icons
   assert.match(coreSource, /generateIconFont/);
   const page = await fetch(origin + "/");
   assert.equal(page.status, 200);
-  assert.match(await page.text(), /Generated font preview/);
-  const appScript = await fetch(origin + "/app.js");
-  assert.equal(appScript.status, 200);
-  assert.match(await appScript.text(), /convert-shapes/);
+  assert.match(await page.text(), /app-root/);
+  const mainScript = await fetch(origin + "/build/browser/main.js");
+  assert.equal(mainScript.status, 200);
+  assert.ok(mainScript.headers.get("content-type").includes("javascript"));
 
   const savedProject = await request("/api/project", "PUT", {
     projectName: "API Test Project", fontFamily: "API Test Icons", cssPrefix: "qa",

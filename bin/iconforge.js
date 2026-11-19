@@ -107,6 +107,18 @@ async function initProject(workspace) {
       await fs.writeFile(projectConfigPath, `${JSON.stringify(DEFAULT_PROJECT, null, 2)}\n`, "utf8");
     }
   }
+  const gitignorePath = path.join(process.cwd(), ".gitignore");
+  const gitignoreEntry = ".iconforge/generated/";
+  try {
+    const gitignoreContent = await fs.readFile(gitignorePath, "utf8");
+    if (!gitignoreContent.includes(gitignoreEntry)) {
+      await fs.appendFile(gitignorePath, `\n${gitignoreEntry}\n`);
+    }
+  } catch (error) {
+    if (error.code === "ENOENT") {
+      await fs.writeFile(gitignorePath, `${gitignoreEntry}\n`);
+    }
+  }
   console.log("IconForge configured for this project.");
   console.log(`Workspace: ${workspace}`);
   console.log("Start the UI with: npm run iconforge");

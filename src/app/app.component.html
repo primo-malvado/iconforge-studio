@@ -1,0 +1,14 @@
+<div class="app-shell">
+  <app-sidebar [activeView]="currentView()" [iconCount]="iconCount()" (viewChange)="switchView($event)"></app-sidebar>
+  <main class="main">
+    <app-topbar [currentView]="currentView()"></app-topbar>
+    <section class="views-container">
+      <app-overview *ngIf="currentView() === 'overview'" (viewChange)="switchView($event)"></app-overview>
+      <app-explorer *ngIf="currentView() === 'explorer'"></app-explorer>
+      <app-build *ngIf="currentView() === 'build'"></app-build>
+      <app-quality *ngIf="currentView() === 'quality'"></app-quality>
+    </section>
+    <footer class="footer"><span>IconForge Studio <b>·</b> Built for developers</span><span><i class="local-dot"></i> Runs on your machine</span></footer>
+  </main>
+  <app-toast></app-toast>
+</div>
